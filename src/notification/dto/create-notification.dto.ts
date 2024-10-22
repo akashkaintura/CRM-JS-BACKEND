@@ -1,15 +1,23 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class CreateNotificationDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
+  @Field()
   userId: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
+  @Field()
   message: string;
 
-  @IsString()
   @IsNotEmpty()
-  type: string; // e.g., 'timesheet', 'approval'
+  @IsString()
+  @Field()
+  type: string;
+
+  @Field({ defaultValue: false })
+  isRead?: boolean;
 }

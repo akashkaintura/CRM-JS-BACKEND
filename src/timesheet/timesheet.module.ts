@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { TimesheetService } from './timesheet.service';
 import { TimesheetController } from './timesheet.controller';
 import { Timesheet, TimesheetSchema } from './schemas/timesheet.schema';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { Timesheet, TimesheetSchema } from './schemas/timesheet.schema';
       { name: Timesheet.name, schema: TimesheetSchema },
     ]),
   ],
-  controllers: [TimesheetController],
+  controllers: [TimesheetController, NotificationModule],
   providers: [TimesheetService],
 })
 export class TimesheetModule {}

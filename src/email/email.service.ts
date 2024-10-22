@@ -1,19 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class EmailService {
-  private sesClient: SESClient;
-
-  constructor() {
-    this.sesClient = new SESClient({
-      region: 'your-region',
-      credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      },
-    });
-  }
+  private ses = new AWS.SES({ region: process.env.AWS_REGION });
 
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
     const params = {
@@ -26,10 +16,13 @@ export class EmailService {
         },
         Subject: { Data: subject },
       },
-      Source: 'your-verified-email@domain.com',
+      Source: process.env.EMAIL_SOURCE,
     };
 
-    const command = new SendEmailCommand(params);
-    await this.sesClient.send(command);
+    try {
+      await this.ses.sendEmail(params).promise();
+    } catch (error: any) {
+      throw new Error(`Failed to send email: ${error.message}`);
+    }
   }
 }

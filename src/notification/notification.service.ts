@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Notification } from './schema/notification.schema';
@@ -14,23 +14,43 @@ export class NotificationsService {
     private readonly emailService: EmailService,
   ) {}
 
+  // Create a new notification
   async create(
     createNotificationDto: CreateNotificationDto,
   ): Promise<NotificationResponseDto> {
-    const newNotification = new this.notificationModel(createNotificationDto);
-    const savedNotification = await newNotification.save();
-    return this.toNotificationResponse(savedNotification);
+    try {
+      const newNotification = new this.notificationModel(createNotificationDto);
+      const savedNotification = await newNotification.save();
+      return this.toNotificationResponse(savedNotification);
+    } catch (error: any) {
+      throw new Error(`Failed to create notification: ${error.message}`);
+    }
   }
 
   // Fetch all notifications for a specific user
   async findByUser(userId: string): Promise<NotificationResponseDto[]> {
-    const notifications = await this.notificationModel.find({ userId }).exec();
-    return notifications.map(this.toNotificationResponse);
+    try {
+      const notifications = await this.notificationModel
+        .find({ userId })
+        .exec();
+      if (!notifications.length) {
+        throw new NotFoundException(
+          `No notifications found for user with ID ${userId}`,
+        );
+      }
+      return notifications.map(this.toNotificationResponse);
+    } catch (error: any) {
+      throw new Error(`Failed to fetch notifications: ${error.message}`);
+    }
   }
 
-  // Method to send email notifications
+  // Send email notifications using EmailService
   async sendEmail(to: string, subject: string, message: string): Promise<void> {
-    await this.emailService.sendEmail(to, subject, message);
+    try {
+      await this.emailService.sendEmail(to, subject, message);
+    } catch (error: any) {
+      throw new Error(`Failed to send email: ${error.message}`);
+    }
   }
 
   // Helper to map Notification to NotificationResponseDto
@@ -39,9 +59,9 @@ export class NotificationsService {
   ): NotificationResponseDto {
     return {
       id: notification._id.toString(),
-      userId: notification.userId,
+      userId: notification.userId, // Make sure to map userId
       message: notification.message,
-      type: notification.type,
+      type: notification.type, // Make sure to map type
       isRead: notification.isRead,
       createdAt: notification.createdAt,
     };

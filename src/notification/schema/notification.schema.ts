@@ -4,13 +4,10 @@ import { Document } from 'mongoose';
 @Schema()
 export class Notification extends Document {
   @Prop({ required: true })
-  userId: string;
+  userId: string; // Ensure userId is defined in the schema
 
   @Prop({ required: true })
   message: string;
-
-  @Prop({ required: true })
-  type: string;
 
   @Prop({ default: false })
   isRead: boolean;
@@ -19,7 +16,7 @@ export class Notification extends Document {
   createdAt: Date;
 
   @Prop({ required: true })
-  recipientId: string;
+  type: string;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
