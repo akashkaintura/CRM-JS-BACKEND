@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { LeavesService } from './leaves.service';
 import { Leave } from './leaves.schema';
-import { CreateLeaveInput } from './dto/create-leave.input';
+import { CreateLeaveDto } from './dto/create-leave.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorator/roles.decorator';
@@ -21,7 +21,7 @@ export class LeavesResolver {
   // Employees can request a new leave
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Leave)
-  async requestLeave(@Args('input') input: CreateLeaveInput) {
+  async requestLeave(@Args('input') input: CreateLeaveDto) {
     return this.leavesService.create(input);
   }
 

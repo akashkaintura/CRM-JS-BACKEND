@@ -3,31 +3,63 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { CreateUserInput } from './dto/create-user.input';
+import { AuditService } from '../audit/audit.service';
+import { NotificationsService } from '../notification/notification.service';
+import { UpdateUserRoleInput } from './dto/update-user-role.input';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly auditService: AuditService,
+    private readonly notificationService: NotificationsService,
+  ) {}
 
-    // Retrieve all users
-    async findAll(): Promise<User[]> {
-        return this.userModel.find().exec();
+  // Update the role of the user
+  async updateUserRole(input: UpdateUserRoleInput): Promise<User> {
+    const user = await this.userModel.findById(input.userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    user.role = input.newRole;
+    await user.save();
 
-    // Find user by email
-    async findByEmail(email: string): Promise<User | undefined> {
-        return this.userModel.findOne({ email }).exec();
-    }
+    // Log the role change action
+    await this.auditService.logAction(
+      'Role Change',
+      user.id,
+      `Changed role to ${input.newRole}`,
+    );
 
-    // Find user by ID
-    async findById(id: string): Promise<User | undefined> {
-        return this.userModel.findById(id).exec();
-    }
+    await this.notificationService.sendEmail(
+      user.email,
+      'Role Update Notification',
+      `Your role has been updated to ${input.newRole}.`,
+    );
 
-    // Create a new user
-    async create(
-        input: CreateUserInput & { password: string; role: string },
-    ): Promise<User> {
-        const newUser = new this.userModel(input);
-        return newUser.save();
-    }
+    return user;
+  }
+
+  // Retrieve all users
+  async findAll(): Promise<User[]> {
+    return this.userModel.find().exec();
+  }
+
+  // Find user by email
+  async findByEmail(email: string): Promise<User | undefined> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
+  // Find user by ID
+  async findById(id: string): Promise<User | undefined> {
+    return this.userModel.findById(id).exec();
+  }
+
+  // Create a new user
+  async create(
+    input: CreateUserInput & { password: string; role: string },
+  ): Promise<User> {
+    const newUser = new this.userModel(input);
+    return newUser.save();
+  }
 }

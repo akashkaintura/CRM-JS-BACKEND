@@ -14,7 +14,7 @@ export class AuditResolver {
   @UseGuards(JwtAuthGuard)
   @Roles(UserRole.ADMIN)
   @Query(() => [AuditLog])
-  async getAuditLogs() {
+  async getAuditLogs(): Promise<AuditLog[]> {
     return this.auditService.getAuditLogs();
   }
 }

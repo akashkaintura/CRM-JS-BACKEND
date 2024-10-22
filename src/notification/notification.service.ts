@@ -1,15 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Notification } from './schemas/notification.schema';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { NotificationResponseDto } from './dto/notification-response.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class NotificationsService {
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<Notification>,
+    private readonly emailService: EmailService,
   ) {}
 
   // Create a new notification
@@ -25,6 +27,11 @@ export class NotificationsService {
   async findByUser(userId: string): Promise<NotificationResponseDto[]> {
     const notifications = await this.notificationModel.find({ userId }).exec();
     return notifications.map(this.toNotificationResponse);
+  }
+
+  // Method to send email notifications
+  async sendEmail(to: string, subject: string, message: string): Promise<void> {
+    await this.emailService.sendEmail(to, subject, message);
   }
 
   // Helper to map Notification to NotificationResponseDto
