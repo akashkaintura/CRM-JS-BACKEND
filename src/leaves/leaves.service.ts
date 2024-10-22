@@ -6,18 +6,18 @@ import { CreateLeaveInput } from './dto/create-leave.input';
 
 @Injectable()
 export class LeavesService {
-    constructor(@InjectModel(Leave.name) private leaveModel: Model<Leave>) { }
+  constructor(@InjectModel(Leave.name) private leaveModel: Model<Leave>) {}
 
-    async findAll(): Promise<Leave[]> {
-        return this.leaveModel.find().exec();
-    }
+  async findAll(): Promise<Leave[]> {
+    return this.leaveModel.find().exec();
+  }
 
-    async create(input: CreateLeaveInput): Promise<Leave> {
-        const newLeave = new this.leaveModel(input);
-        return newLeave.save();
-    }
+  async create(input: CreateLeaveInput): Promise<Leave> {
+    const newLeave = new this.leaveModel(input);
+    return newLeave.save();
+  }
 
-    async findByEmployee(employeeId: string): Promise<Leave[]> {
-        return this.leaveModel.find({ employeeId }).exec();
-    }
+  async findByEmployee(employeeId: string): Promise<Leave[]> {
+    return this.leaveModel.find({ employeeId }).exec();
+  }
 }

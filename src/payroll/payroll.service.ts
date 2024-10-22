@@ -6,20 +6,20 @@ import { CreatePayrollInput } from './dto/create-payroll.input';
 
 @Injectable()
 export class PayrollService {
-    constructor(
-        @InjectModel(Payroll.name) private payrollModel: Model<Payroll>,
-    ) { }
+  constructor(
+    @InjectModel(Payroll.name) private payrollModel: Model<Payroll>,
+  ) {}
 
-    async findAll(): Promise<Payroll[]> {
-        return this.payrollModel.find().exec();
-    }
+  async findAll(): Promise<Payroll[]> {
+    return this.payrollModel.find().exec();
+  }
 
-    async create(input: CreatePayrollInput): Promise<Payroll> {
-        const newPayroll = new this.payrollModel(input);
-        return newPayroll.save();
-    }
+  async create(input: CreatePayrollInput): Promise<Payroll> {
+    const newPayroll = new this.payrollModel(input);
+    return newPayroll.save();
+  }
 
-    async findByEmployee(employeeId: string): Promise<Payroll[]> {
-        return this.payrollModel.find({ employeeId }).exec();
-    }
+  async findByEmployee(employeeId: string): Promise<Payroll[]> {
+    return this.payrollModel.find({ employeeId }).exec();
+  }
 }

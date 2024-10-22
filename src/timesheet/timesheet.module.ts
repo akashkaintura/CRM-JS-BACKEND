@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TimesheetService } from './timesheet.service';
 import { TimesheetController } from './timesheet.controller';
+import { Timesheet, TimesheetSchema } from './schemas/timesheet.schema';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: Timesheet.name, schema: TimesheetSchema },
+    ]),
+  ],
+  controllers: [TimesheetController],
   providers: [TimesheetService],
-  controllers: [TimesheetController]
 })
 export class TimesheetModule {}

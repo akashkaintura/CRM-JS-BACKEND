@@ -1,21 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Department } from './department.schema';
-import { CreateDepartmentInput } from './dto/create-department.input';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { TimesheetService } from './timesheet.service';
+import { Timesheet } from './schemas/timesheet.schema';
+import { CreateTimesheetDto } from './dto/create-timesheet.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
+import { Roles } from '../auth/decorator/roles.decorator';
+import { UserRole } from '../user/enum/user-role.enum';
 
-@Injectable()
-export class DepartmentsService {
-    constructor(
-        @InjectModel(Department.name) private departmentModel: Model<Department>,
-    ) { }
+@Resolver(() => Timesheet)
+export class TimesheetsResolver {
+  constructor(private readonly timesheetsService: TimesheetService) {}
 
-    async findAll(): Promise<Department[]> {
-        return this.departmentModel.find().exec();
-    }
+  // Employees can log their own timesheets
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => Timesheet)
+  async logTimesheet(@Args('input') input: CreateTimesheetDto) {
+    return this.timesheetsService.create(input);
+  }
 
-    async create(input: CreateDepartmentInput): Promise<Department> {
-        const newDepartment = new this.departmentModel(input);
-        return newDepartment.save();
-    }
+  // Managers and admins can view timesheets for all employees
+  @UseGuards(JwtAuthGuard)
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
+  @Query(() => [Timesheet])
+  async allTimesheets() {
+    return this.timesheetsService.findAll();
+  }
+
+  // Employees can view their own timesheets
+  @UseGuards(JwtAuthGuard)
+  @Query(() => [Timesheet])
+  async getEmployeeTimesheets(@Args('employeeId') employeeId: string) {
+    return this.timesheetsService.findByEmployee(employeeId);
+  }
 }

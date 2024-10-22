@@ -10,4 +10,4 @@ import { Payroll, PayrollSchema } from './payroll.schema';
   ],
   providers: [PayrollService, PayrollResolver],
 })
-export class PayrollModule { }
+export class PayrollModule {}
