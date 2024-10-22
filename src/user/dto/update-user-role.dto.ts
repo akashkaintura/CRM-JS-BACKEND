@@ -2,7 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { UserRole } from '../enum/user-role.enum';
 
 @InputType()
-export class UpdateUserRoleInput {
+export class UpdateUserRoleDto {
   @Field()
   userId: string; // User ID
 

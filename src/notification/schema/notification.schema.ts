@@ -4,19 +4,22 @@ import { Document } from 'mongoose';
 @Schema()
 export class Notification extends Document {
   @Prop({ required: true })
-  userId: string; // The ID of the user to whom the notification belongs
+  userId: string;
 
   @Prop({ required: true })
-  message: string; // The notification message
+  message: string;
 
   @Prop({ required: true })
-  type: string; // e.g., 'timesheet', 'approval'
+  type: string;
 
   @Prop({ default: false })
-  isRead: boolean; // Whether the notification has been read
+  isRead: boolean;
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
+  @Prop({ required: true })
+  recipientId: string;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

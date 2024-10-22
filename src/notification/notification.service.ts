@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Notification } from './schemas/notification.schema';
+import { Notification } from './schema/notification.schema';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { NotificationResponseDto } from './dto/notification-response.dto';
 import { EmailService } from 'src/email/email.service';
@@ -14,7 +14,6 @@ export class NotificationsService {
     private readonly emailService: EmailService,
   ) {}
 
-  // Create a new notification
   async create(
     createNotificationDto: CreateNotificationDto,
   ): Promise<NotificationResponseDto> {

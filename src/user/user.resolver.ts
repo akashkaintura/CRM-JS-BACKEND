@@ -1,13 +1,13 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user.schema';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { UserRole } from './enum/user-role.enum';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UpdateUserRoleInput } from './dto/update-user-role.input';
+import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -17,7 +17,7 @@ export class UserResolver {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Query(() => [User])
-  async updateUserRole(@Args('input') input: UpdateUserRoleInput) {
+  async updateUserRole(@Args('input') input: UpdateUserRoleDto) {
     return this.userService.updateUserRole(input);
   }
 
@@ -25,7 +25,7 @@ export class UserResolver {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Mutation(() => User)
-  async createUser(@Args('input') input: CreateUserInput) {
+  async createUser(@Args('input') input: CreateUserDto) {
     return this.userService.create(input);
   }
 

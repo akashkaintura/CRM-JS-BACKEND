@@ -2,10 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './user.schema';
-import { CreateUserInput } from './dto/create-user.input';
+import { CreateUserDto } from './dto/create-user.dto';
 import { AuditService } from '../audit/audit.service';
 import { NotificationsService } from '../notification/notification.service';
-import { UpdateUserRoleInput } from './dto/update-user-role.input';
+import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
 @Injectable()
 export class UserService {
@@ -16,7 +16,7 @@ export class UserService {
   ) {}
 
   // Update the role of the user
-  async updateUserRole(input: UpdateUserRoleInput): Promise<User> {
+  async updateUserRole(input: UpdateUserRoleDto): Promise<User> {
     const user = await this.userModel.findById(input.userId);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -57,7 +57,7 @@ export class UserService {
 
   // Create a new user
   async create(
-    input: CreateUserInput & { password: string; role: string },
+    input: CreateUserDto & { password: string; role: string },
   ): Promise<User> {
     const newUser = new this.userModel(input);
     return newUser.save();

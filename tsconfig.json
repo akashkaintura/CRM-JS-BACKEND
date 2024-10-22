@@ -10,12 +10,16 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "strict": true,
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "types": [
+      "node"
+    ]
   }
 }
