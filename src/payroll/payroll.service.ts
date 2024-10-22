@@ -10,18 +10,15 @@ export class PayrollService {
         @InjectModel(Payroll.name) private payrollModel: Model<Payroll>,
     ) { }
 
-    // Retrieve all payroll records
     async findAll(): Promise<Payroll[]> {
         return this.payrollModel.find().exec();
     }
 
-    // Create a new payroll record
     async create(input: CreatePayrollInput): Promise<Payroll> {
         const newPayroll = new this.payrollModel(input);
         return newPayroll.save();
     }
 
-    // Find payroll by employeeId
     async findByEmployee(employeeId: string): Promise<Payroll[]> {
         return this.payrollModel.find({ employeeId }).exec();
     }
