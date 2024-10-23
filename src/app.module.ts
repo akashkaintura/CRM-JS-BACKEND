@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './user/user.module';
 import { PayrollModule } from './payroll/payroll.module';
@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Make ConfigModule available globally
+      isGlobal: true,
     }),
 
     // MongooseModule to connect to MongoDB using the MONGO_URI from .env
@@ -30,14 +30,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI'), // Get MONGO_URI from .env
+        uri: configService.get<string>(process.env.MONGO_URI),
       }),
     }),
     MongooseModule.forFeature([
       { name: Timesheet.name, schema: TimesheetSchema },
     ]),
-
-    MongooseModule.forRoot(process.env.MONGO_URI),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,

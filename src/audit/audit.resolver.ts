@@ -1,6 +1,6 @@
 import { Resolver, Query } from '@nestjs/graphql';
 import { AuditService } from './audit.service';
-import { AuditLog } from './audit.schema';
+import { AuditLog } from './schema/audit.schema';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorator/roles.decorator';

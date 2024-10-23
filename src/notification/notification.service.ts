@@ -59,9 +59,9 @@ export class NotificationsService {
   ): NotificationResponseDto {
     return {
       id: notification._id.toString(),
-      userId: notification.userId, // Make sure to map userId
+      userId: notification.userId,
       message: notification.message,
-      type: notification.type, // Make sure to map type
+      type: notification.type,
       isRead: notification.isRead,
       createdAt: notification.createdAt,
     };

@@ -24,5 +24,7 @@ export class EmailService {
     } catch (error: any) {
       throw new Error(`Failed to send email: ${error.message}`);
     }
+
+    console.log(`Email sent to ${to}: ${subject}`);
   }
 }

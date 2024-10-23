@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuditService } from './audit.service';
-import { AuditLog, AuditLogSchema } from './audit.schema';
+import { AuditLog, AuditLogSchema } from './schema/audit.schema';
 import { AuditResolver } from './audit.resolver';
 
 @Module({
