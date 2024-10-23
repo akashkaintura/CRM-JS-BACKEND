@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './user/user.module';
 import { PayrollModule } from './payroll/payroll.module';
@@ -13,7 +13,7 @@ import { TimesheetModule } from './timesheet/timesheet.module';
 import {
   Timesheet,
   TimesheetSchema,
-} from './timesheet/schemas/timesheet.schema';
+} from './timesheet/schema/timesheet.schema';
 import { AuditModule } from './audit/audit.module';
 import { NotificationModule } from './notification/notification.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -42,6 +42,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       playground: true,
       context: ({ req }) => ({ req }),
     }),
+    NotificationModule,
     UserModule,
     PayrollModule,
     LeavesModule,
@@ -49,7 +50,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     DepartmentsModule,
     TimesheetModule,
     AuditModule,
-    NotificationModule,
   ],
   providers: [
     {

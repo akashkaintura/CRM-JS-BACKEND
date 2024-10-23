@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { TimesheetService } from './timesheet.service';
-import { Timesheet } from './schemas/timesheet.schema';
+import { Timesheet } from './schema/timesheet.schema';
 import { CreateTimesheetDto } from './dto/create-timesheet.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
@@ -9,7 +9,7 @@ import { UserRole } from '../user/enum/user-role.enum';
 
 @Resolver(() => Timesheet)
 export class TimesheetsResolver {
-  constructor(private readonly timesheetsService: TimesheetService) {}
+  constructor(private readonly timesheetsService: TimesheetService) { }
 
   // Employees can log their own timesheets
   @UseGuards(JwtAuthGuard)

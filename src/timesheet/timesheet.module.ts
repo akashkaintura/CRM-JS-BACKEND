@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TimesheetService } from './timesheet.service';
 import { TimesheetController } from './timesheet.controller';
-import { Timesheet, TimesheetSchema } from './schemas/timesheet.schema';
+import { Timesheet, TimesheetSchema } from './schema/timesheet.schema';
 import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({

@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 @Schema()
 export class Notification extends Document {
   @Prop({ required: true })
-  userId: string; // Ensure userId is defined in the schema
+  userId: string;
 
   @Prop({ required: true })
   message: string;

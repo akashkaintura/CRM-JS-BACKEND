@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Timesheet } from './schemas/timesheet.schema';
+import { Timesheet } from './schema/timesheet.schema';
 import { CreateTimesheetDto } from './dto/create-timesheet.dto';
 import { UpdateTimesheetDto } from './dto/update-timesheet.dto';
 import { TimesheetResponseDto } from './dto/timesheet-response.dto';
