@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
-import { User, UserSchema } from './user.schema';
+import { User, UserSchema } from './schema/user.schema';
 import { TimesheetModule } from '../timesheet/timesheet.module';
 import { AuditModule } from '../audit/audit.module';
 // import { EmailService } from '../email/email.service';
@@ -18,4 +18,4 @@ import { AuditModule } from '../audit/audit.module';
   providers: [UserService, UserResolver],
   exports: [UserService],
 })
-export class UserModule {}
+export class UserModule { }

@@ -13,7 +13,7 @@ export class RegisterDto {
   email: string;
 
   @Field()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
 
   @Field(() => UserRole)

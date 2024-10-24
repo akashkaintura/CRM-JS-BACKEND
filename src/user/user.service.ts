@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './user.schema';
+import { User } from './schema/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuditService } from '../audit/audit.service';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
@@ -23,7 +23,6 @@ export class UserService {
     user.role = input.newRole;
     await user.save();
 
-    // Log the role change action
     await this.auditService.logAction(
       'Role Change',
       user.id,
@@ -45,7 +44,7 @@ export class UserService {
   }
 
   // Find user by email
-  async findByEmail(email: string): Promise<User | undefined> {
+  async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email }).exec();
   }
 
@@ -55,10 +54,8 @@ export class UserService {
   }
 
   // Create a new user
-  async create(
-    input: CreateUserDto & { password: string; role: string },
-  ): Promise<User> {
-    const newUser = new this.userModel(input);
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
 }

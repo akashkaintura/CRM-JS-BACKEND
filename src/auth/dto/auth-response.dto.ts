@@ -6,5 +6,8 @@ export class AuthResponseDto {
   access_token: string;
 
   @Field()
+  employeeId: string;
+
+  @Field()
   refresh_token?: string;
 }

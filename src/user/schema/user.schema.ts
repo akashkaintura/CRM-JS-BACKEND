@@ -1,13 +1,13 @@
-import { Field, ObjectType, Int } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { UserRole } from './enum/user-role.enum';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { UserRole } from '../enum/user-role.enum';
 
 @Schema()
 @ObjectType()
 export class User extends Document {
-  @Field(() => Int)
-  id: number;
+  @Field(() => String)
+  _id: string;
 
   @Field()
   @Prop({ required: true })
@@ -18,16 +18,19 @@ export class User extends Document {
   email: string;
 
   @Prop({ required: true })
-  password: string; // Password should not be exposed via GraphQL
+  password: string;
+
+  @Field(() => String)
+  @Prop({ required: true })
+  employeeId: string;
 
   @Field(() => UserRole)
-  @Prop({ required: true, enum: UserRole, default: UserRole.EMPLOYEE })
+  @Prop({ required: true, enum: UserRole })
   role: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-// Exclude password field from the GraphQL schema
 UserSchema.set('toJSON', {
   transform: (doc, ret) => {
     delete ret.password;

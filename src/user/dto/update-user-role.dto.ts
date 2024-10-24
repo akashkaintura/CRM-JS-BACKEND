@@ -4,8 +4,8 @@ import { UserRole } from '../enum/user-role.enum';
 @InputType()
 export class UpdateUserRoleDto {
   @Field()
-  userId: string; // User ID
+  userId: string;
 
   @Field(() => UserRole)
-  newRole: UserRole; // New role (ADMIN, EMPLOYEE, MANAGER)
+  newRole: UserRole;
 }

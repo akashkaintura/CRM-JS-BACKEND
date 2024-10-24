@@ -21,7 +21,7 @@ export class AuthResolver {
       if (!user) {
         throw new Error('Invalid credentials');
       }
-      return await this.authService.login(user);
+      return this.authService.login(user);
     } catch (error) {
       console.error('Error during login:', error);
       throw new Error('Login failed due to server error');
@@ -34,6 +34,12 @@ export class AuthResolver {
   async register(
     @Args('registerDto') registerDto: RegisterDto,
   ): Promise<AuthResponseDto> {
-    return this.authService.register(registerDto);
+    try {
+      // Call the authService to register the user
+      return this.authService.register(registerDto);
+    } catch (error) {
+      console.error('Error during registration:', error);
+      throw new Error('Registration failed due to server error');
+    }
   }
 }
