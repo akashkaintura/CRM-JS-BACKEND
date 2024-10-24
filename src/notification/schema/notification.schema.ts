@@ -9,14 +9,14 @@ export class Notification extends Document {
   @Prop({ required: true })
   message: string;
 
+  @Prop({ required: true })
+  type: string;
+
   @Prop({ default: false })
   isRead: boolean;
 
   @Prop({ default: Date.now })
   createdAt: Date;
-
-  @Prop({ required: true })
-  type: string;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

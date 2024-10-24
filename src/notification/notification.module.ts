@@ -16,3 +16,5 @@ import { Notification, NotificationSchema } from './schema/notification.schema';
   exports: [NotificationsService],
 })
 export class NotificationModule {}
+
+console.log('Notification schema registered');

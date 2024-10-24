@@ -10,10 +10,10 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { DepartmentsModule } from './department/department.module';
 import { TimesheetModule } from './timesheet/timesheet.module';
-import {
-  Timesheet,
-  TimesheetSchema,
-} from './timesheet/schema/timesheet.schema';
+// import {
+//   Timesheet,
+//   TimesheetSchema,
+// } from './timesheet/schema/timesheet.schema';
 import { AuditModule } from './audit/audit.module';
 import { NotificationModule } from './notification/notification.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -25,17 +25,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       isGlobal: true,
     }),
 
-    // MongooseModule to connect to MongoDB using the MONGO_URI from .env
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>(process.env.MONGO_URI),
+        uri: configService.get<string>('MONGO_URI'),
       }),
     }),
-    MongooseModule.forFeature([
-      { name: Timesheet.name, schema: TimesheetSchema },
-    ]),
+    // MongooseModule.forFeature([
+    //   { name: Timesheet.name, schema: TimesheetSchema },
+    // ]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
