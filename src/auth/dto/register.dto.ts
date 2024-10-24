@@ -2,7 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { UserRole } from '../../user/enum/user-role.enum';
 
 @InputType()
-export class RegisterInput {
+export class RegisterDto {
   @Field()
   name: string;
 

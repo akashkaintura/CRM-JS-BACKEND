@@ -10,8 +10,6 @@ This is the backend for the CRM system built with NestJS, using GraphQL for API 
 - [Project Structure](#project-structure)
 - [GraphQL](#graphql)
 - [Environment Variables](#environment-variables)
-- [Available Scripts](#available-scripts)
-- [License](#license)
 
 ---
 

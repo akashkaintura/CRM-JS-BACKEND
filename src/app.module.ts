@@ -18,8 +18,6 @@ import { AuditModule } from './audit/audit.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-require('dotenv').config()
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -70,4 +68,4 @@ require('dotenv').config()
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

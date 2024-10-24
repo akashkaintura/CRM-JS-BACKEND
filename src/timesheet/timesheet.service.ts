@@ -14,7 +14,7 @@ export class TimesheetService {
     @InjectModel(Timesheet.name) private timesheetModel: Model<Timesheet>,
     // private readonly notificationsService: NotificationsService,
     // private readonly emailService: EmailService,
-  ) { }
+  ) {}
 
   // Create a new timesheet entry and send a notification
   async create(

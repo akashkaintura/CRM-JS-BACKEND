@@ -11,7 +11,7 @@ import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   // Fetch all users (admin only)
   @UseGuards(JwtAuthGuard, RolesGuard)

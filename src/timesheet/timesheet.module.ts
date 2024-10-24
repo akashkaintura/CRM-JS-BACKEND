@@ -14,6 +14,6 @@ import { Timesheet, TimesheetSchema } from './schema/timesheet.schema';
   ],
   providers: [TimesheetService],
   controllers: [TimesheetController],
-  exports:[TimesheetService]
+  exports: [TimesheetService],
 })
 export class TimesheetModule {}

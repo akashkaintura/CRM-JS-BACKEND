@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { LoginResponse } from './dto/login-response.dto';
-import { LoginInput } from './dto/login.dto';
-import { RegisterInput } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 import { Public } from './decorator/public.decorator';
+import { AuthResponse } from './dto/auth-response.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -11,11 +11,11 @@ export class AuthResolver {
 
   // Login mutation (public)
   @Public()
-  @Mutation(() => LoginResponse)
-  async login(@Args('loginInput') loginInput: LoginInput) {
+  @Mutation(() => AuthResponse)
+  async login(@Args('loginDto') loginDto: LoginDto) {
     const user = await this.authService.validateUser(
-      loginInput.email,
-      loginInput.password,
+      loginDto.email,
+      loginDto.password,
     );
     if (!user) {
       throw new Error('Invalid credentials');
@@ -25,13 +25,8 @@ export class AuthResolver {
 
   // Register mutation (public)
   @Public()
-  @Mutation(() => LoginResponse)
-  async register(@Args('registerInput') registerInput: RegisterInput) {
-    return this.authService.register(
-      registerInput.email,
-      registerInput.password,
-      registerInput.name,
-      registerInput.role,
-    );
+  @Mutation(() => AuthResponse)
+  async register(@Args('registerDto') registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
   }
 }
