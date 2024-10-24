@@ -15,17 +15,13 @@ export class AuthService {
 
   // Register a new user
   async register(registerDto: RegisterDto) {
-    const { email, password, name, role } = registerDto;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+    const hashedPassword = await bcrypt.hash(registerDto.password, 10);
     const newUser = await this.userService.create({
-      email,
+      email: registerDto.email,
       password: hashedPassword,
-      name,
-      role,
+      name: registerDto.name,
+      role: registerDto.role,
     });
-
     return this.login(newUser);
   }
 
