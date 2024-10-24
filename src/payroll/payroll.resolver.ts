@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PayrollService } from './payroll.service';
 import { Payroll } from './payroll.schema';
-import { CreatePayrollInput } from './dto/create-payroll.input';
+import { CreatePayrollInput } from './dto/create-payroll.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorator/roles.decorator';
@@ -9,7 +9,7 @@ import { UserRole } from '../user/enum/user-role.enum';
 
 @Resolver(() => Payroll)
 export class PayrollResolver {
-  constructor(private readonly payrollService: PayrollService) {}
+  constructor(private readonly payrollService: PayrollService) { }
 
   // Only Admins can view all payroll records
   @UseGuards(JwtAuthGuard)

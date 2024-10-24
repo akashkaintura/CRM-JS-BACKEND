@@ -12,8 +12,8 @@ export class AuditLog extends Document {
   @Prop({ required: true })
   timestamp: Date;
 
-  @Prop()
-  details?: string;
+  @Prop({ default: '' })
+  details: string;
 }
 
 export const AuditLogSchema = SchemaFactory.createForClass(AuditLog);

@@ -5,16 +5,16 @@ import { Timesheet } from './schema/timesheet.schema';
 import { CreateTimesheetDto } from './dto/create-timesheet.dto';
 import { UpdateTimesheetDto } from './dto/update-timesheet.dto';
 import { TimesheetResponseDto } from './dto/timesheet-response.dto';
-import { EmailService } from '../email/email.service';
-import { NotificationsService } from '../notification/notification.service';
+// import { EmailService } from '../email/email.service';
+// import { NotificationsService } from '../notification/notification.service';
 
 @Injectable()
 export class TimesheetService {
   constructor(
     @InjectModel(Timesheet.name) private timesheetModel: Model<Timesheet>,
-    private readonly notificationsService: NotificationsService,
-    private readonly emailService: EmailService,
-  ) {}
+    // private readonly notificationsService: NotificationsService,
+    // private readonly emailService: EmailService,
+  ) { }
 
   // Create a new timesheet entry and send a notification
   async create(
@@ -24,16 +24,16 @@ export class TimesheetService {
     const savedTimesheet = await newTimesheet.save();
 
     // Send notification when a new timesheet is created
-    await this.notificationsService.create({
-      userId: createTimesheetDto.employeeId,
-      message: `Your timesheet for ${createTimesheetDto.date} was submitted successfully.`,
-      type: 'timesheet',
-    });
-    await this.emailService.sendEmail(
-      'recipient@example.com',
-      'Timesheet Submitted',
-      `Your timesheet for ${createTimesheetDto.date} has been submitted.`,
-    );
+    // await this.notificationsService.create({
+    //   userId: createTimesheetDto.employeeId,
+    //   message: `Your timesheet for ${createTimesheetDto.date} was submitted successfully.`,
+    //   type: 'timesheet',
+    // });
+    // await this.emailService.sendEmail(
+    //   'recipient@example.com',
+    //   'Timesheet Submitted',
+    //   `Your timesheet for ${createTimesheetDto.date} has been submitted.`,
+    // );
 
     return this.toTimesheetResponse(savedTimesheet);
   }
@@ -56,11 +56,11 @@ export class TimesheetService {
     }
 
     // Send notification when a timesheet is updated
-    await this.notificationsService.create({
-      userId: updatedTimesheet.employeeId, // Notify the employee
-      message: `Your timesheet for ${updatedTimesheet.date} was updated.`,
-      type: 'timesheet',
-    });
+    // await this.notificationsService.create({
+    //   userId: updatedTimesheet.employeeId, // Notify the employee
+    //   message: `Your timesheet for ${updatedTimesheet.date} was updated.`,
+    //   type: 'timesheet',
+    // });
 
     return this.toTimesheetResponse(updatedTimesheet);
   }

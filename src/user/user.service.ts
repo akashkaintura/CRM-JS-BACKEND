@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { User } from './user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuditService } from '../audit/audit.service';
-import { NotificationsService } from '../notification/notification.service';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
 @Injectable()
@@ -12,7 +11,7 @@ export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly auditService: AuditService,
-    private readonly notificationService: NotificationsService,
+    // private readonly notificationService: NotificationsService,
   ) {}
 
   // Update the role of the user
@@ -31,11 +30,11 @@ export class UserService {
       `Changed role to ${input.newRole}`,
     );
 
-    await this.notificationService.sendEmail(
-      user.email,
-      'Role Update Notification',
-      `Your role has been updated to ${input.newRole}.`,
-    );
+    // await this.notificationService.sendEmail(
+    //   user.email,
+    //   'Role Update Notification',
+    //   `Your role has been updated to ${input.newRole}.`,
+    // );
 
     return user;
   }

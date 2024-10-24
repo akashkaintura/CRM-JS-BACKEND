@@ -10,38 +10,48 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { DepartmentsModule } from './department/department.module';
 import { TimesheetModule } from './timesheet/timesheet.module';
-// import {
-//   Timesheet,
-//   TimesheetSchema,
-// } from './timesheet/schema/timesheet.schema';
+import {
+  Timesheet,
+  TimesheetSchema,
+} from './timesheet/schema/timesheet.schema';
 import { AuditModule } from './audit/audit.module';
-import { NotificationModule } from './notification/notification.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+require('dotenv').config()
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI'),
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const mongoUri = configService.get<string>('DATABASE_PORT');
+        try {
+          console.log('Connecting to MongoDB...', mongoUri);
+          return {
+            uri: mongoUri,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          };
+        } catch (error) {
+          console.error('MongoDB connection error:', error);
+        }
+      },
     }),
-    // MongooseModule.forFeature([
-    //   { name: Timesheet.name, schema: TimesheetSchema },
-    // ]),
+    AuditModule,
+    MongooseModule.forFeature([
+      { name: Timesheet.name, schema: TimesheetSchema },
+    ]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: true,
       context: ({ req }) => ({ req }),
     }),
-    NotificationModule,
     UserModule,
     PayrollModule,
     LeavesModule,
@@ -61,4 +71,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

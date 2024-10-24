@@ -1,18 +1,19 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TimesheetService } from './timesheet.service';
 import { TimesheetController } from './timesheet.controller';
 import { Timesheet, TimesheetSchema } from './schema/timesheet.schema';
-import { NotificationModule } from 'src/notification/notification.module';
+// import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Timesheet.name, schema: TimesheetSchema },
     ]),
-    forwardRef(() => NotificationModule),
+    // EmailModule,
   ],
-  controllers: [TimesheetController, NotificationModule],
   providers: [TimesheetService],
+  controllers: [TimesheetController],
+  exports:[TimesheetService]
 })
 export class TimesheetModule {}

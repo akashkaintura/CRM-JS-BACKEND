@@ -6,28 +6,20 @@ import { AuditLog } from './schema/audit.schema';
 @Injectable()
 export class AuditService {
   constructor(
-    @InjectModel(AuditLog.name) private auditLogModel: Model<AuditLog>,
-  ) {}
+    @InjectModel(AuditLog.name) private readonly auditLogModel: Model<AuditLog>,
+  ) { }
 
-  async logAction(
-    action: string,
-    userId: string,
-    details?: string,
-  ): Promise<AuditLog> {
-    const auditLog = new this.auditLogModel({
+  async logAction(action: string, userId: string, details?: string): Promise<AuditLog> {
+    const newLog = new this.auditLogModel({
       action,
       userId,
       details,
       timestamp: new Date(),
     });
-    return auditLog.save();
+    return newLog.save();
   }
 
   async getAuditLogs(): Promise<AuditLog[]> {
-    return this.auditLogModel.find().exec();
-  }
-
-  async findAll(): Promise<AuditLog[]> {
     return this.auditLogModel.find().exec();
   }
 }

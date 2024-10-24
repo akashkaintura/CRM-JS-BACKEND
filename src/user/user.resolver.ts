@@ -5,13 +5,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/decorator/roles.decorator';
 import { UserRole } from './enum/user-role.enum';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   // Fetch all users (admin only)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -26,7 +26,8 @@ export class UserResolver {
   @Roles(UserRole.ADMIN)
   @Mutation(() => User)
   async createUser(@Args('input') input: CreateUserDto) {
-    return this.userService.create(input);
+    const role = input.role ?? 'user';
+    return this.userService.create({ ...input, role });
   }
 
   // Fetch current user profile

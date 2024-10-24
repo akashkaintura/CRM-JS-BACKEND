@@ -11,12 +11,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // Validate user credentials
   async validateUser(email: string, password: string) {
     const user = await this.userService.findByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       const result = user.toObject();
-      delete result.password; // Remove password from result
+      delete result.password;
       return result;
     }
     return null;
