@@ -42,7 +42,6 @@ require('dotenv').config()
         }
       },
     }),
-    AuditModule,
     MongooseModule.forFeature([
       { name: Timesheet.name, schema: TimesheetSchema },
     ]),

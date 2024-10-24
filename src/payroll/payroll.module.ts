@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PayrollService } from './payroll.service';
 import { PayrollResolver } from './payroll.resolver';
-import { Payroll, PayrollSchema } from './payroll.schema';
+import { Payroll, PayrollSchema } from './schema/payroll.schema';
 
 @Module({
   imports: [
