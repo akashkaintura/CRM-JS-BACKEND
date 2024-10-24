@@ -37,14 +37,19 @@ export class AuthService {
 
   // Generate JWT token
   async login(user: any) {
-    const payload: JwtPayload = {
-      sub: user._id,
-      email: user.email,
-      role: user.role,
-    };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+    try {
+      const payload: JwtPayload = {
+        sub: user._id,
+        email: user.email,
+        role: user.role,
+      };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw new Error('Login failed due to server error');
+    }
   }
 
   // Validate user from JWT payload

@@ -12,15 +12,20 @@ export class AuthResolver {
   // Login mutation (public)
   @Public()
   @Mutation(() => AuthResponseDto)
-  async login(@Args('loginDto') loginDto: LoginDto) {
-    const user = await this.authService.validateUser(
-      loginDto.email,
-      loginDto.password,
-    );
-    if (!user) {
-      throw new Error('Invalid credentials');
+  async login(@Args('loginDto') loginDto: LoginDto): Promise<AuthResponseDto> {
+    try {
+      const user = await this.authService.validateUser(
+        loginDto.email,
+        loginDto.password,
+      );
+      if (!user) {
+        throw new Error('Invalid credentials');
+      }
+      return await this.authService.login(user);
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw new Error('Login failed due to server error');
     }
-    return this.authService.login(user);
   }
 
   // Register mutation (public)
